@@ -1,14 +1,13 @@
 """tcp server."""
 import socket
 
-port = 5000
+port = 6000
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server.bind(('', port))
+server.bind(('127.0.0.1', port))
 
-# 最大连接数 1
-server.listen(1)
+server.listen()
 
 print('Server ready')
 
