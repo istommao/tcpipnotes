@@ -5,5 +5,5 @@
 * [IP协议](protocol/ip.md)
 * [路由协议](protocol/route.md)
 * [TCP协议](tcp/index.md)
-    * [超时重传](tcp/index.md)
-    * [拥塞控制](tcp/index.md)
+    * [窗口控制](tcp/window.md)
+    * [超时重传](tcp/rt.md)
