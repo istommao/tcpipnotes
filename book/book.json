@@ -1,0 +1,43 @@
+{
+    "title": "TCP/IP Notes",
+    "description": "TCP/IP笔记,无声笔记",
+    "language": "zh-hans",
+    "plugins": [
+        "katex",
+        "github",
+        "prism",
+        "sitemap",
+        "expandable-chapters",
+        "page-toc-button",
+        "back-to-top-button",
+        "-sharing",
+        "sharing-plus"
+    ],
+    "pluginsConfig": {
+        "sharing": {
+            "facebook": false,
+            "twitter": false,
+            "google": false,
+            "weibo": true,
+            "qq": true,
+            "douban": true,
+            "pocket": true,
+            "vk": false,
+            "all": [
+                "weibo", "pocket", "qq"
+            ]
+        },
+        "github": {
+          "url": "https://github.com/istommao/tcpipnotes"
+        },
+        "sitemap": {
+            "hostname": "https://tcpip.silentnotes.top/"
+        },
+        "prism": {
+            "css": [
+              "prismjs/themes/prism-okaidia.css"
+            ]
+        },
+        "expandable-chapters":{}
+    }
+}
