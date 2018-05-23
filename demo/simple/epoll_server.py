@@ -13,20 +13,25 @@ port = 8080
 
 server.bind(('127.0.0.1', port))
 
-server.listen(1)
+server.listen()
 
 
 print('Server listen http://127.0.0.1:{}/'.format(port))
 
+try:
+    while True:
+        conn, addr = server.accept()
 
-conn, addr = server.accept()
+        print('Accept new connection from %s:%s' % addr)
 
-print('Accept new connection from %s:%s' % addr)
+        request = b''
+        while EOL1 not in request and EOL2 not in request:
+            request += conn.recv(1024)
 
-request = b''
-while EOL1 not in request and EOL2 not in request:
-    request += conn.recv(1024)
-
-print(request.decode())
-conn.send(response.encode())
-conn.close()
+        print(request.decode())
+        conn.send(response.encode())
+        conn.close()
+except KeyboardInterrupt:
+    pass
+finally:
+    server.close()
