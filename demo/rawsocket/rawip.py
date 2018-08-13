@@ -45,30 +45,6 @@ def handler_ip_header(ip_header):
     )
 
 
-def handler_tcp_header(packet, iph_length):
-    tcp_header = packet[iph_length:iph_length + 20]
-
-    tcph = struct.unpack('!HHLLBBHHH', tcp_header)
-
-    source_port = tcph[0]
-    dest_port = tcph[1]
-    sequence = tcph[2]
-    acknowledgement = tcph[3]
-    doff_reserved = tcph[4]
-    tcph_length = doff_reserved >> 4
-
-    print('Source Port: %s Dest Port: %s Seq: %s Ack: %s TCP header length: %s' %
-          (source_port, dest_port, sequence, acknowledgement, tcph_length))
-
-    h_size = iph_length + tcph_length * 4
-    data_size = len(packet) - h_size
-
-    # get data from the packet
-    data = packet[h_size:]
-
-    # print(data)
-
-
 def main():
     # the public network interface
     HOST = socket.gethostbyname(socket.gethostname())
@@ -81,8 +57,6 @@ def main():
         # print(data, addr)
         print('\nIP Header')
         handler_ip_header(data[:20])
-        print('\nTCP Header ')
-        handler_tcp_header(data, 20)
 
 
 if __name__ == '__main__':
