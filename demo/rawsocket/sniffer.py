@@ -3,7 +3,7 @@ import struct
 import binascii
 
 rawsocket = socket.socket(
-    socket.PF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
+    socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
 
 data, addr = rawsocket.recvfrom(2048)
 

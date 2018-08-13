@@ -5,19 +5,22 @@ import socket
 from struct import *
 
 
-def checksum(msg):
-    """校验和."""
+def checksum(data):
+    """校验和.
+
+    https://tools.ietf.org/html/rfc1071
+    """
     s = 0
+    n = len(data) % 2
+    for i in range(0, len(data) - n, 2):
+        s += ord(data[i]) + (ord(data[i + 1]) << 8)
 
-    for i in range(0, len(msg), 2):
-        w = ord(msg[i]) + (ord(msg[i + 1]) << 8)
-        s = s + w
-
-    s = (s >> 16) + (s & 0xffff)
-    s = s + (s >> 16)
+    if n:
+        s += ord(data[i + 1])
+    while (s >> 16):
+        s = (s & 0xFFFF) + (s >> 16)
 
     s = ~s & 0xffff
-
     return s
 
 
@@ -88,6 +91,7 @@ psh = pack('!4s4sBBH', source_address, dest_address,
            placeholder, protocol, tcp_length)
 
 psh = psh + tcp_header + user_data.encode('utf-8')
+
 
 tcp_check = checksum(psh)
 # print tcp_checksum
