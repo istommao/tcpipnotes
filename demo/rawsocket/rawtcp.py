@@ -28,38 +28,40 @@ import struct
 
 
 def handler_tcp_header(packet, iph_length):
+    """Handler tcp header."""
     tcp_header = packet[iph_length:iph_length + 20]
 
     tcph = struct.unpack('!HHLLBBHHH', tcp_header)
 
-    source_port = tcph[0]
-    dest_port = tcph[1]
-    sequence = tcph[2]
-    acknowledgement = tcph[3]
+    src_port = tcph[0]
+    dst_port = tcph[1]
+    seq = tcph[2]
+    ack = tcph[3]
     doff_reserved = tcph[4]
     tcph_length = doff_reserved >> 4
 
     print('Source Port: %s Dest Port: %s Seq: %s Ack: %s TCP header length: %s' %
-          (source_port, dest_port, sequence, acknowledgement, tcph_length))
+          (src_port, dst_port, seq, ack, tcph_length))
 
-    h_size = iph_length + tcph_length * 4
-    data_size = len(packet) - h_size
+    header_size = iph_length + tcph_length * 4
+    data_size = len(packet) - header_size
 
     # get data from the packet
-    data = packet[h_size:]
+    data = packet[data_size:]
+    print('Data', data)
 
 
 def main():
-    # the public network interface
-    HOST = socket.gethostbyname(socket.gethostname())
-
     # create a raw socket and bind it to the public interface
-    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-    s.bind((HOST, 0))
-    while True:
-        data, addr = s.recvfrom(65565)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
 
-        print('\nTCP Header')
+    host = socket.gethostbyname(socket.gethostname())
+    port = 0
+    sock.bind((host, port))
+    while True:
+        data, addr = sock.recvfrom(65565)
+
+        print('Data len: %s Addr: %s' % (len(data), addr))
         handler_tcp_header(data, 20)
 
 
